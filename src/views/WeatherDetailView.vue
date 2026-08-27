@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useTemparature } from '@/composables/useTemparature'
+import { useTemperature } from '@/composables/useTemperature'
 import { fetchWeatherDetail } from '@/services/weatherApi'
 
 const route = useRoute()
@@ -10,7 +10,7 @@ const cityData = ref(null)
 const isLoading = ref(false)
 const errorMessage = ref('')
 
-const { displayTemp, unitSymbol } = useTemparature(
+const { displayTemp, unitSymbol } = useTemperature(
   () => cityData.value?.temp ?? 0,
 )
 
@@ -45,6 +45,8 @@ onMounted(loadWeatherDetail)
       <p>습도: {{ cityData.humidity }}%</p>
       <p>풍속: {{ cityData.wind }}m/s</p>
     </div>
-    <button @click="router.push({ name: 'WeatherHome '})">홈으로 돌아가기</button>
+    <button @click="router.push({ name: 'WeatherHome' })">
+      홈으로 돌아가기
+    </button>
   </section>
 </template>

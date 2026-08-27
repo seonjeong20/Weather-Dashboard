@@ -1,5 +1,5 @@
 <script setup>
-import { useTemparature } from '@/composables/useTemparature'
+import { useTemperature } from '@/composables/useTemperature'
 
 const props = defineProps({
   cityItem: { type: Object, required: true },
@@ -7,7 +7,7 @@ const props = defineProps({
 
 const emit = defineEmits(['select-card', 'click-detail'])
 
-const { displayTemp, unitSymbol } = useTemparature(() => props.cityItem.temp)
+const { displayTemp, unitSymbol } = useTemperature(() => props.cityItem.temp)
 </script>
 
 <template>
@@ -22,8 +22,10 @@ const { displayTemp, unitSymbol } = useTemparature(() => props.cityItem.temp)
     <span v-if="props.cityItem.temp >= 25">더움</span>
     <span v-else>선선함</span>
 
-    <button @click.stop="emit('click-detail', props.cityItem.id)">
-      상세보기
-    </button>
+    <el-button
+      type="primary"
+      @click.stop="emit('click-detail', props.cityItem.id)"
+      >상세보기</el-button
+    >
   </article>
 </template>
