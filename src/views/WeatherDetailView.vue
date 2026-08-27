@@ -19,7 +19,12 @@ async function loadWeatherDetail() {
   errorMessage.value = ''
 
   try {
-    cityData.value = await fetchWeatherDetail(String(route.params.cityId))
+    const cityName =
+      typeof route.query.name === 'string' ? route.query.name : ''
+    cityData.value = await fetchWeatherDetail(
+      String(route.params.cityId),
+      cityName,
+    )
     if (!cityData.value) errorMessage.value = '등록되지 않은 도시입니다.'
   } catch (error) {
     console.error(error)
@@ -33,10 +38,16 @@ onMounted(loadWeatherDetail)
 </script>
 
 <template>
-  <section>
+  <section class="weather-detail">
     <h2>상세 날씨</h2>
-    <p v-if="isLoading">데이터를 불러오는 중입니다...</p>
-    <p v-else-if="errorMessage">{{ errorMessage }}</p>
+    <el-skeleton v-if="isLoading" :rows="5" animated />
+    <el-alert
+      v-else-if="errorMessage"
+      :title="errorMessage"
+      type="error"
+      show-icon
+      :closable="false"
+    />
 
     <div v-else-if="cityData">
       <h3>{{ cityData.name }}</h3>
@@ -45,8 +56,8 @@ onMounted(loadWeatherDetail)
       <p>습도: {{ cityData.humidity }}%</p>
       <p>풍속: {{ cityData.wind }}m/s</p>
     </div>
-    <button @click="router.push({ name: 'WeatherHome' })">
+    <el-button type="primary" @click="router.push({ name: 'WeatherHome' })">
       홈으로 돌아가기
-    </button>
+    </el-button>
   </section>
 </template>

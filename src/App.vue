@@ -11,8 +11,8 @@ provide('appTitle', 'Vue Weather Dashboard')
     <header>
       <h1>Vue Weather Dashboard</h1>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/">날씨</RouterLink>
+        <RouterLink to="/about">서비스 소개</RouterLink>
       </nav>
       <UnitToggler />
     </header>

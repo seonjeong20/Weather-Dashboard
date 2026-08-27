@@ -13,7 +13,9 @@ const { displayTemp, unitSymbol } = useTemperature(() => props.cityItem.temp)
 <template>
   <article
     class="weather-card"
-    @click="emit('select-card', `${props.cityItem.name}이 선택되었습니다.`)"
+    tabindex="0"
+    @click="emit('select-card', props.cityItem)"
+    @keyup.enter="emit('select-card', props.cityItem)"
   >
     <h3>{{ props.cityItem.name }}</h3>
     <p>현재 기온: {{ displayTemp }}{{ unitSymbol }}</p>
@@ -22,9 +24,7 @@ const { displayTemp, unitSymbol } = useTemperature(() => props.cityItem.temp)
     <span v-if="props.cityItem.temp >= 25">더움</span>
     <span v-else>선선함</span>
 
-    <el-button
-      type="primary"
-      @click.stop="emit('click-detail', props.cityItem.id)"
+    <el-button type="primary" @click.stop="emit('click-detail', props.cityItem)"
       >상세보기</el-button
     >
   </article>

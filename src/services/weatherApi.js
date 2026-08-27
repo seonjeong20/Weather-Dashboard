@@ -45,6 +45,19 @@ function normalizeWeather(city, data) {
   }
 }
 
+function parseGeoCityId(cityId, cityName = '') {
+  const match = cityId.match(/^geo_(-?\d+(?:\.\d+)?)_(-?\d+(?:\.\d+)?)$/)
+
+  if (!match) return null
+
+  return {
+    id: cityId,
+    name: cityName,
+    lat: Number(match[1]),
+    lon: Number(match[2]),
+  }
+}
+
 export async function fetchWeatherList() {
   const results = await Promise.allSettled(
     DEFAULT_CITIES.map(async (city) => {
@@ -64,12 +77,17 @@ export async function fetchWeatherList() {
   return weatherList
 }
 
-export async function fetchWeatherDetail(cityId) {
-  const city = DEFAULT_CITIES.find((item) => item.id === cityId)
+export async function fetchWeatherDetail(cityId, cityName = '') {
+  const city =
+    DEFAULT_CITIES.find((item) => item.id === cityId) ??
+    parseGeoCityId(cityId, cityName)
   if (!city) return null
 
   const data = await requestWeather(city)
-  return normalizeWeather(city, data)
+  return normalizeWeather(
+    { ...city, name: city.name || data.name || '검색한 도시' },
+    data,
+  )
 }
 
 export async function searchCityWeather(cityName) {

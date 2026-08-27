@@ -1,0 +1,66 @@
+export const ACTIVITIES = [
+  {
+    id: 'running',
+    label: '러닝',
+    icon: '🏃',
+    description: '기온과 습도가 적당하고 바람이 약한 날에 좋아요.',
+    outdoor: true,
+    humidityLimit: 70,
+    windLimit: 8,
+    rainPenalty: 50,
+  },
+  {
+    id: 'walking',
+    label: '산책',
+    icon: '🚶',
+    description: '강수와 강풍 부담이 적은 날에 편안해요.',
+    outdoor: true,
+    humidityLimit: 80,
+    windLimit: 10,
+    rainPenalty: 40,
+  },
+  {
+    id: 'cycling',
+    label: '자전거',
+    icon: '🚲',
+    description: '바람이 약하고 노면이 젖지 않을 때 안전해요.',
+    outdoor: true,
+    humidityLimit: 75,
+    windLimit: 6,
+    rainPenalty: 55,
+  },
+  {
+    id: 'laundry',
+    label: '빨래',
+    icon: '🧺',
+    description: '습도가 낮고 비가 오지 않을수록 잘 말라요.',
+    outdoor: true,
+    humidityLimit: 65,
+    windLimit: 9,
+    rainPenalty: 65,
+  },
+  {
+    id: 'picnic',
+    label: '피크닉',
+    icon: '🧺',
+    description: '선선하고 맑은 날씨에 오래 머물기 좋아요.',
+    outdoor: true,
+    humidityLimit: 75,
+    windLimit: 7,
+    rainPenalty: 60,
+  },
+  {
+    id: 'indoor',
+    label: '실내 활동',
+    icon: '🏠',
+    description: '비·강풍·심한 더위 때 대안이 되는 활동이에요.',
+    outdoor: false,
+    humidityLimit: 100,
+    windLimit: 100,
+    rainPenalty: 0,
+  },
+]
+
+export function findActivity(activityId) {
+  return ACTIVITIES.find((activity) => activity.id === activityId) ?? null
+}

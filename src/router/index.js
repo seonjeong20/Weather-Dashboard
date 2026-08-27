@@ -3,6 +3,7 @@ import WeatherHomeView from '@/views/WeatherHomeView.vue'
 import { DEFAULT_CITIES } from '@/data/defaultCities'
 
 const validCityIds = new Set(DEFAULT_CITIES.map((city) => city.id))
+const geoCityIdPattern = /^geo_-?\d+(?:\.\d+)?_-?\d+(?:\.\d+)?$/
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,6 +24,11 @@ const router = createRouter({
       component: () => import('@/views/WeatherDetailView.vue'),
     },
     {
+      path: '/activity/:activityId',
+      name: 'ActivityDetail',
+      component: () => import('@/views/ActivityDetailView.vue'),
+    },
+    {
       path: '/not-found',
       name: 'NotFound',
       component: () => import('@/views/NotFoundView.vue'),
@@ -38,7 +44,7 @@ const router = createRouter({
 router.beforeEach((to) => {
   if (to.name === 'WeatherDetail') {
     const cityId = String(to.params.cityId)
-    if (!validCityIds.has(cityId)) {
+    if (!validCityIds.has(cityId) && !geoCityIdPattern.test(cityId)) {
       return { name: 'NotFound' }
     }
   }
