@@ -24,6 +24,10 @@ function handleChange() {
 .unit-toggler {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
+  color: #66748c;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 </style>

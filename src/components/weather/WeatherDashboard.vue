@@ -56,7 +56,7 @@ onMounted(loadWeather)
 </script>
 
 <template>
-  <div>
+  <div class="dashboard-wrapper">
     <BaseDashboardCard>
       <template #title><h2>도시 검색</h2></template>
       <SearchBar
