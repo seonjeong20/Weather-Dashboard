@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import WeatherHomeView from '@/views/WeatherHomeView.vue'
+import { DEFAULT_CITIES } from '@/data/defaultCities'
 
-const validCityIds = new Set(['city_01', 'city_02', 'city_03'])
+const validCityIds = new Set(DEFAULT_CITIES.map((city) => city.id))
 
 const router = createRouter({
   history: createWebHistory(),

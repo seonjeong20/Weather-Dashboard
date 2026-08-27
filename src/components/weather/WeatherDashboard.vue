@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { fetchWeatherList } from '@/services/weatherApi'
+import { fetchWeatherList, searchCityWeather } from '@/services/weatherApi'
 
 import BaseDashboardCard from './BaseDashboardCard.vue'
 import SearchBar from './SearchBar.vue'
@@ -17,6 +17,8 @@ function goDetail(cityId) {
 const weatherList = ref([])
 const isLoading = ref(false)
 const errorMessage = ref('')
+const isSearching = ref(false)
+const searchErrorMessage = ref('')
 const selectedCityInfo = ref('도시 카드를 선택해 보세요.')
 
 const searchQuery = ref(
@@ -52,6 +54,40 @@ async function loadWeather() {
   }
 }
 
+async function handleCitySearch() {
+  const query = searchQuery.value.trim()
+
+  if (!query || isSearching.value) return
+
+  isSearching.value = true
+  searchErrorMessage.value = ''
+
+  try {
+    const searchedCity = await searchCityWeather(query)
+
+    if (!searchedCity) {
+      searchErrorMessage.value = `'${query}'에 해당하는 국내 도시를 찾지 못했습니다.`
+      return
+    }
+
+    const cityAlreadyExists = weatherList.value.some(
+      (city) => city.name === searchedCity.name,
+    )
+
+    if (!cityAlreadyExists) {
+      weatherList.value.unshift(searchedCity)
+    }
+
+    selectedCityInfo.value = `${searchedCity.name}의 날씨를 불러왔습니다.`
+  } catch (error) {
+    console.error(error)
+    searchErrorMessage.value =
+      '도시를 검색하지 못했습니다. 잠시 후 다시 시도해 주세요.'
+  } finally {
+    isSearching.value = false
+  }
+}
+
 onMounted(loadWeather)
 </script>
 
@@ -61,8 +97,12 @@ onMounted(loadWeather)
       <template #title><h2>도시 검색</h2></template>
       <SearchBar
         :current-query="searchQuery"
+        :is-searching="isSearching"
         @update-query="(value) => (searchQuery = value)"
+        @search-city="handleCitySearch"
       />
+
+      <p v-if="searchErrorMessage">{{ searchErrorMessage }}</p>
     </BaseDashboardCard>
 
     <BaseDashboardCard>
